@@ -3,10 +3,11 @@ package seedu.address.model.person;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.event.Event;
 import seedu.address.model.person.role.Role;
@@ -20,21 +21,19 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
-    private final Set<Event> events = new HashSet<>();
 
     // Data fields
-    private final Set<Role> roles = new HashSet<>();
+    private final Map<Event, Set<Role>> eventRoles = new HashMap<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Set<Event> events, Set<Role> roles) {
-        requireAllNonNull(name, phone, email, roles);
+    public Person(Name name, Phone phone, Email email, Map<Event, Set<Role>> eventRoles) {
+        requireAllNonNull(name, phone, email, eventRoles);
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.events.addAll(events);
-        this.roles.addAll(roles);
+        this.eventRoles.putAll(eventRoles);
     }
 
     public Name getName() {
@@ -55,7 +54,7 @@ public class Person {
      * @return
      */
     public Set<Event> getEvents() {
-        return Collections.unmodifiableSet(events);
+        return Collections.unmodifiableSet(eventRoles.keySet());
     }
 
     /**
@@ -63,7 +62,17 @@ public class Person {
      * if modification is attempted.
      */
     public Set<Role> getRoles() {
-        return Collections.unmodifiableSet(roles);
+        return Collections.unmodifiableSet(eventRoles.values().stream()
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet()));
+    }
+
+    /**
+     * Returns an immutable eventRoles map, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Map<Event, Set<Role>> getEventRoles() {
+        return Collections.unmodifiableMap(eventRoles);
     }
 
     /**
@@ -98,14 +107,13 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
-                && events.equals(otherPerson.events)
-                && roles.equals(otherPerson.roles);
+                && eventRoles.equals(otherPerson.eventRoles);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, events, roles);
+        return Objects.hash(name, phone, email, eventRoles);
     }
 
     @Override
@@ -114,8 +122,7 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
-                .add("events", events)
-                .add("roles", roles)
+                .add("eventRoles", eventRoles)
                 .toString();
     }
 

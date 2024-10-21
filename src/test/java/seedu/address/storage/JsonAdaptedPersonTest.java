@@ -5,8 +5,11 @@ import static seedu.address.storage.JsonAdaptedPerson.MISSING_FIELD_MESSAGE_FORM
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -39,56 +42,84 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_invalidName_throwsIllegalValueException() {
+        Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : VALID_EVENTS) {
+            eventRoles.put(event, new HashSet<>(VALID_ROLES));
+        }
         JsonAdaptedPerson person =
-                new JsonAdaptedPerson(INVALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_EVENTS, VALID_ROLES);
+                new JsonAdaptedPerson(INVALID_NAME, VALID_PHONE, VALID_EMAIL, eventRoles);
         String expectedMessage = Name.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_nullName_throwsIllegalValueException() {
+        Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : VALID_EVENTS) {
+            eventRoles.put(event, new HashSet<>(VALID_ROLES));
+        }
         JsonAdaptedPerson person =
-                new JsonAdaptedPerson(null, VALID_PHONE, VALID_EMAIL, VALID_EVENTS, VALID_ROLES);
+                new JsonAdaptedPerson(null, VALID_PHONE, VALID_EMAIL, eventRoles);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_invalidPhone_throwsIllegalValueException() {
+        Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : VALID_EVENTS) {
+            eventRoles.put(event, new HashSet<>(VALID_ROLES));
+        }
         JsonAdaptedPerson person =
-                new JsonAdaptedPerson(VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_EVENTS, VALID_ROLES);
+                new JsonAdaptedPerson(VALID_NAME, INVALID_PHONE, VALID_EMAIL, eventRoles);
         String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_nullPhone_throwsIllegalValueException() {
-        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, null, VALID_EMAIL, VALID_EVENTS, VALID_ROLES);
+        Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : VALID_EVENTS) {
+            eventRoles.put(event, new HashSet<>(VALID_ROLES));
+        }
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, null, VALID_EMAIL, eventRoles);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_invalidEmail_throwsIllegalValueException() {
+        Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : VALID_EVENTS) {
+            eventRoles.put(event, new HashSet<>(VALID_ROLES));
+        }
         JsonAdaptedPerson person =
-                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, INVALID_EMAIL, VALID_EVENTS, VALID_ROLES);
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, INVALID_EMAIL, eventRoles);
         String expectedMessage = Email.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_nullEmail_throwsIllegalValueException() {
-        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, null, VALID_EVENTS, VALID_ROLES);
+        Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : VALID_EVENTS) {
+            eventRoles.put(event, new HashSet<>(VALID_ROLES));
+        }
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, null, eventRoles);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_invalidRoles_throwsIllegalValueException() {
-        List<JsonAdaptedRole> invalidRoles = new ArrayList<>(VALID_ROLES);
-        invalidRoles.add(new JsonAdaptedRole(INVALID_ROLE));
+        Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : VALID_EVENTS) {
+            Set<JsonAdaptedRole> roles = new HashSet<>(VALID_ROLES);
+            roles.add(new JsonAdaptedRole(INVALID_ROLE));
+            eventRoles.put(event, roles);
+        }
         JsonAdaptedPerson person =
-                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_EVENTS, invalidRoles);
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, eventRoles);
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 

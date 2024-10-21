@@ -1,9 +1,12 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.AbstractMap;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,24 +29,22 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
-    private final List<JsonAdaptedEvent> events = new ArrayList<>();
-    private final List<JsonAdaptedRole> roles = new ArrayList<>();
+    private final Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("events") List<JsonAdaptedEvent> events,
-            @JsonProperty("roles") List<JsonAdaptedRole> roles) {
+            @JsonProperty("email") String email, 
+            @JsonProperty("eventRoles") Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles) {
         this.name = name;
         this.phone = phone;
         this.email = email;
-        if (events != null) {
-            this.events.addAll(events);
-        }
-        if (roles != null) {
-            this.roles.addAll(roles);
+        if (eventRoles != null) {
+            this.eventRoles = eventRoles;
+        } else {
+            this.eventRoles = new HashMap<>();
         }
     }
 
@@ -54,12 +55,13 @@ class JsonAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
-        events.addAll(source.getEvents().stream()
-                .map(JsonAdaptedEvent::new)
-                .toList());
-        roles.addAll(source.getRoles().stream()
-                .map(JsonAdaptedRole::new)
-                .toList());
+        eventRoles = source.getEventRoles().entrySet().stream()
+                .map(entry -> new AbstractMap.SimpleEntry<>(
+                        new JsonAdaptedEvent(entry.getKey()),
+                        entry.getValue().stream()
+                                .map(JsonAdaptedRole::new)
+                                .collect(Collectors.toSet())))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
@@ -69,13 +71,8 @@ class JsonAdaptedPerson {
      */
     public Person toModelType() throws IllegalValueException {
         final List<Role> personRoles = new ArrayList<>();
-        for (JsonAdaptedRole role : roles) {
+        for (JsonAdaptedRole role : eventRoles.values().stream().flatMap(Set::stream).collect(Collectors.toList())) {
             personRoles.add(role.toModelType());
-        }
-
-        final List<Event> eventList = new ArrayList<>();
-        for (JsonAdaptedEvent event : events) {
-            eventList.add(event.toModelType());
         }
 
         if (name == null) {
@@ -102,14 +99,19 @@ class JsonAdaptedPerson {
         }
         final Email modelEmail = new Email(email);
 
-        if (eventList.isEmpty()) {
+        if (eventRoles.isEmpty()) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Event.class.getSimpleName()));
         }
-        final Set<Event> modelEvents = new HashSet<>(eventList);
 
-        final Set<Role> modelRoles = new HashSet<>(personRoles);
+        final Map<Event, Set<Role>> modelEventRoles = new HashMap<>();
+        for (JsonAdaptedEvent event : eventRoles.keySet()) {
+            Set<JsonAdaptedRole> roles = eventRoles.get(event);
+            modelEventRoles.put(new Event(event.getEventName()), roles.stream()
+                    .map(JsonAdaptedRole::toModelType)
+                    .collect(Collectors.toSet()));
+        }
 
-        return new Person(modelName, modelPhone, modelEmail, modelEvents, modelRoles);
+        return new Person(modelName, modelPhone, modelEmail, modelEventRoles);
     }
 
 }
