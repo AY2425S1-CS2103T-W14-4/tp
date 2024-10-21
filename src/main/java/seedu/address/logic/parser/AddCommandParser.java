@@ -7,7 +7,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
@@ -41,10 +45,16 @@ public class AddCommandParser implements Parser<AddCommand> {
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-        Set<Event> eventList = ParserUtil.parseEvents(argMultimap.getAllValues(PREFIX_EVENT));
-        Set<Role> roleList = ParserUtil.parseRoles(argMultimap.getAllValues(PREFIX_ROLE));
+        List<Event> events = ParserUtil.parseEvents(argMultimap.getAllValues(PREFIX_EVENT));
+        List<Set<Role>> roleList = argMultimap.getAllValues(PREFIX_ROLE).stream()
+                .map(roles -> ParserUtil.parseRoles(roles))
+                .collect(Collectors.toList());
+        Map<Event, Set<Role>> eventRoles = new HashMap<>();
+        for (int i = 0; i < events.size(); i++) {
+            eventRoles.put(events.get(i), roleList.get(i));
+        }
 
-        Person person = new Person(name, phone, email, eventList, roleList);
+        Person person = new Person(name, phone, email, eventRoles);
 
         return new AddCommand(person);
     }

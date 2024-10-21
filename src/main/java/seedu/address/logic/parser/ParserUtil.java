@@ -2,8 +2,8 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -260,10 +260,11 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code Collection<String> roles} into a {@code Set<Role>}.
+     * Parses {@code List<String> roles} into a {@code List<Role>}.
      */
-    public static Set<Role> parseRoles(Collection<String> roles) throws ParseException {
-        requireNonNull(roles);
+    public static Set<Role> parseRoles(String rolesString) throws ParseException {
+        requireNonNull(rolesString);
+        List<String> roles = parseList(rolesString);
         final Set<Role> roleSet = new HashSet<>();
         for (String roleName : roles) {
             roleSet.add(parseRole(roleName));
@@ -274,13 +275,30 @@ public class ParserUtil {
     /**
      * Parses {@code Collection<String> events} into a {@code Set<Event>}.
      */
-
-    public static Set<Event> parseEvents(Collection<String> events) throws ParseException {
+    public static List<Event> parseEvents(List<String> events) throws ParseException {
         requireNonNull(events);
-        final Set<Event> eventSet = new HashSet<>();
+        final List<Event> eventList = new ArrayList<>();
         for (String eventName: events) {
-            eventSet.add(parseEvent(eventName));
+            eventList.add(parseEvent(eventName));
         }
-        return eventSet;
+        return eventList;
+    }
+
+    /**
+     * Parses a {@code String input} of format "[a, b, c]" 
+     * into a {@code List<String>}.
+     */
+    public static List<String> parseList(String input) {
+        // Remove square brackets
+        String trimmed = input.substring(1, input.length() - 1);
+
+        // Split by comma and trim whitespace
+        String[] elements = trimmed.split(",");
+        List<String> result = new ArrayList<>();
+        for (String element : elements) {
+            result.add(element.trim());
+        }
+        
+        return result;
     }
 }
