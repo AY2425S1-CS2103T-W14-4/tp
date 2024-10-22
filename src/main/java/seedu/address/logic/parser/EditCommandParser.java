@@ -6,10 +6,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_EVENT, PREFIX_ROLE);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_EVENT);
 
         Index index;
 
@@ -56,8 +55,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
             editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
         }
-        parseEventsForEdit(argMultimap.getAllValues(PREFIX_EVENT)).ifPresent(editPersonDescriptor::setEvents);
-        parseRolesForEdit(argMultimap.getAllValues(PREFIX_ROLE)).ifPresent(editPersonDescriptor::setRoles);
+        parseEventRolesForEdit(argMultimap.getAllValues(PREFIX_EVENT)).ifPresent(editPersonDescriptor::setEventRoles);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
@@ -67,27 +65,17 @@ public class EditCommandParser implements Parser<EditCommand> {
     }
 
     /**
-     * Parses {@code Collection<String> roles} into a {@code Set<Role>} if {@code roles} is non-empty.
-     * If {@code roles} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Role>} containing zero roles.
+     * Parses {@code List<String> eventRoleString} into a {@code Map<Event, Set<Role>>} if {@code eventRoleString} is non-empty.
+     * If {@code eventRoleString} is empty, it will return an empty Optional.
+     *
+     * @throws ParseException if the parsing of event roles fails
      */
-    private Optional<Set<Role>> parseRolesForEdit(Collection<String> roles) throws ParseException {
-        assert roles != null;
+    private Optional<Map<Event, Set<Role>>> parseEventRolesForEdit(List<String> eventRoleString) throws ParseException {
+        assert eventRoleString != null;
 
-        if (roles.isEmpty()) {
+        if (eventRoleString.isEmpty()) {
             return Optional.empty();
         }
-        Collection<String> roleSet = roles.size() == 1 && roles.contains("") ? Collections.emptySet() : roles;
-        return Optional.of(ParserUtil.parseRoles(roleSet));
-    }
-
-    private Optional<Set<Event>> parseEventsForEdit(Collection<String> events) throws ParseException {
-        assert events != null;
-
-        if (events.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> eventSet = events.size() == 1 && events.contains("") ? Collections.emptySet() : events;
-        return Optional.of(ParserUtil.parseEvents(eventSet));
+        return Optional.of(ParserUtil.parseEventRoles(eventRoleString));
     }
 }
