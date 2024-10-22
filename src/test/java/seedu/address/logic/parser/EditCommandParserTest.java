@@ -16,8 +16,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_ATHLETE;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_VOLUNTEER;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_ATHLETE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_VOLUNTEER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
@@ -107,7 +107,7 @@ public class EditCommandParserTest {
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
-                .withRoles(VALID_ROLE_ATHLETE, VALID_ROLE_VOLUNTEER).build();
+                .withEventRoles(VALID_EVENT_ROLE_AMY_AS_ATHLETE, VALID_EVENT_ROLE_AMY_AS_VOLUNTEER).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -148,7 +148,7 @@ public class EditCommandParserTest {
 
         // roles
         userInput = targetIndex.getOneBased() + ROLE_DESC_VOLUNTEER;
-        descriptor = new EditPersonDescriptorBuilder().withRoles(VALID_ROLE_VOLUNTEER).build();
+        descriptor = new EditPersonDescriptorBuilder().withEventRoles(VALID_EVENT_ROLE_AMY_AS_VOLUNTEER).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -190,7 +190,7 @@ public class EditCommandParserTest {
         Index targetIndex = INDEX_THIRD_PERSON;
         String userInput = targetIndex.getOneBased() + ROLE_EMPTY;
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withRoles().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withEventRoles().build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);

@@ -7,7 +7,6 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -280,17 +279,17 @@ public class ParserUtilTest {
 
     @Test
     public void parseRoles_collectionWithInvalidRoles_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseRoles(Arrays.asList(VALID_ROLE_1, INVALID_ROLE)));
+        assertThrows(ParseException.class, () -> ParserUtil.parseRoles(VALID_ROLE_1 + ", " + INVALID_ROLE));
     }
 
     @Test
     public void parseRoles_emptyCollection_returnsEmptySet() {
-        assertTrue(ParserUtil.parseRoles(Collections.emptyList()).isEmpty());
+        assertTrue(ParserUtil.parseRoles("").isEmpty());
     }
 
     @Test
     public void parseRoles_collectionWithValidRoles_returnsRoleSet() {
-        Set<Role> actualRoleSet = ParserUtil.parseRoles(Arrays.asList(VALID_ROLE_1, VALID_ROLE_2));
+        Set<Role> actualRoleSet = ParserUtil.parseRoles(VALID_ROLE_1 + ", " + VALID_ROLE_2);
         Set<Role> expectedRoleSet = new HashSet<Role>(Arrays.asList(new Role(VALID_ROLE_1), new Role(VALID_ROLE_2)));
 
         assertEquals(expectedRoleSet, actualRoleSet);
