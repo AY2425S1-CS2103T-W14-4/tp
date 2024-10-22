@@ -1,10 +1,11 @@
 package seedu.address.testutil;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.event.Event;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -35,8 +36,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setName(person.getName());
         descriptor.setPhone(person.getPhone());
         descriptor.setEmail(person.getEmail());
-        descriptor.setEvents(person.getEvents());
-        descriptor.setRoles(person.getRoles());
+        descriptor.setEventRoles(person.getEventRoles());
     }
 
     /**
@@ -62,24 +62,13 @@ public class EditPersonDescriptorBuilder {
         descriptor.setEmail(new Email(email));
         return this;
     }
-
     /**
-     * Parses the {@code roles} into a {@code Set<Role>} and set it to the {@code EditPersonDescriptor}
+     * Parses the {@code eventRoles} into a {@code Map<Event, Set<Role>>} and set it to the {@code EditPersonDescriptor}
      * that we are building.
      */
-    public EditPersonDescriptorBuilder withRoles(String... roles) {
-        Set<Role> roleSet = Stream.of(roles).map(Role::new).collect(Collectors.toSet());
-        descriptor.setRoles(roleSet);
-        return this;
-    }
-
-    /**
-     * Parses the {@code events} into a {@code Set<Event>} and set it to the {@code EditPersonDescriptor}
-     * that we are building.
-     */
-    public EditPersonDescriptorBuilder withEvents(String... events) {
-        Set<Event> eventSet = Stream.of(events).map(Event::new).collect(Collectors.toSet());
-        descriptor.setEvents(eventSet);
+    public EditPersonDescriptorBuilder withEventRoles(String... eventRoles) {
+        Map<Event, Set<Role>> eventRolesMap = ParserUtil.parseEventRoles(Arrays.asList(eventRoles));
+        descriptor.setEventRoles(eventRolesMap);
         return this;
     }
 

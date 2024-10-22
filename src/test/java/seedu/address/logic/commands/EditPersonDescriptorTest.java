@@ -8,7 +8,7 @@ import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_ATHLETE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_ATHLETE;
 
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +48,7 @@ public class EditPersonDescriptorTest {
         assertFalse(DESC_AMY.equals(editedAmy));
 
         // different tags -> returns false
-        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withRoles(VALID_ROLE_ATHLETE).build();
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withEventRoles(VALID_EVENT_ROLE_AMY_AS_ATHLETE).build();
         assertFalse(DESC_AMY.equals(editedAmy));
     }
 
@@ -58,9 +58,8 @@ public class EditPersonDescriptorTest {
         String expected = EditPersonDescriptor.class.getCanonicalName() + "{name="
                           + editPersonDescriptor.getName().orElse(null) + ", phone="
                           + editPersonDescriptor.getPhone().orElse(null) + ", email="
-                          + editPersonDescriptor.getEmail().orElse(null) + ", events="
-                          + editPersonDescriptor.getEvents().orElse(null) + ", roles="
-                          + editPersonDescriptor.getRoles().orElse(null) + "}";
+                          + editPersonDescriptor.getEmail().orElse(null) + ", eventRoles="
+                          + editPersonDescriptor.getEventRoles().orElse(null) + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }
 }

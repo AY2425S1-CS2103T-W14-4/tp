@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
+import java.util.Map;
 import java.util.Set;
 
 import seedu.address.logic.commands.AddCommand;
@@ -51,21 +52,15 @@ public class PersonUtil {
         descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
         descriptor.getEmail().ifPresent(email -> sb.append(PREFIX_EMAIL).append(email.value).append(" "));
 
-        if (descriptor.getEvents().isPresent()) {
-            Set<Event> events = descriptor.getEvents().get();
-            if (events.isEmpty()) {
+        if (descriptor.getEventRoles().isPresent()) {
+            Map<Event, Set<Role>> eventRoles = descriptor.getEventRoles().get();
+            if (eventRoles.isEmpty()) {
                 sb.append(PREFIX_EVENT);
             } else {
-                events.forEach(e -> sb.append(PREFIX_EVENT).append(e.value).append(" "));
-            }
-        }
-
-        if (descriptor.getRoles().isPresent()) {
-            Set<Role> roles = descriptor.getRoles().get();
-            if (roles.isEmpty()) {
-                sb.append(PREFIX_ROLE);
-            } else {
-                roles.forEach(s -> sb.append(PREFIX_ROLE).append(s.getRoleName()).append(" "));
+                eventRoles.forEach((e, r) -> {
+                    sb.append(PREFIX_EVENT).append(e.value).append(" ");
+                    r.forEach(s -> sb.append(PREFIX_ROLE).append(s.getRoleName()).append(" "));
+                });
             }
         }
 

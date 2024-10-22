@@ -73,6 +73,15 @@ public class PersonBuilder {
     }
 
     /**
+     * Parses the {@code eventRoles} into a {@code Map<Event, Set<Role>>} and set it to the {@code Person} that we are
+     * building.
+     */
+    public PersonBuilder withEventRoles(String ... eventRoles) {
+        this.eventRoles.put(new Event(DEFAULT_EVENT), SampleDataUtil.getRoleSet(eventRoles));
+        return this;
+    }
+
+    /**
      * Sets the {@code Phone} of the {@code Person} that we are building.
      */
     public PersonBuilder withPhone(String phone) {
@@ -91,5 +100,4 @@ public class PersonBuilder {
     public Person build() {
         return new Person(name, phone, email, eventRoles);
     }
-
 }

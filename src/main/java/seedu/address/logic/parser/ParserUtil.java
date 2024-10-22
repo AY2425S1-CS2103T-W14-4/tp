@@ -226,6 +226,12 @@ public class ParserUtil {
         };
     }
 
+    /**
+     * Parses a {@code List<String> eventRoleString} into a {@code Map<Event, Set<Role>>}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code eventRoleString} is invalid.
+     */
     public static Map<Event, Set<Role>> parseEventRoles(List<String> eventRoleString) throws ParseException {
         Map<Event, Set<Role>> eventRoles = new HashMap<>();
         for (String eventRole : eventRoleString) {
@@ -284,7 +290,10 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code List<String> roles} into a {@code List<Role>}.
+     * Parses a {@code String rolesString} into a {@code Set<Role>}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if any of the given roles are invalid.
      */
     public static Set<Role> parseRoles(String rolesString) throws ParseException {
         requireNonNull(rolesString);
@@ -296,7 +305,10 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code Collection<String> events} into a {@code Set<Event>}.
+     * Parses a {@code List<String> events} into a {@code List<Event>}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if any of the given events are invalid.
      */
     public static List<Event> parseEvents(List<String> events) throws ParseException {
         requireNonNull(events);
