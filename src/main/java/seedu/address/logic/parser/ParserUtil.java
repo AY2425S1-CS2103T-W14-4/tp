@@ -5,7 +5,10 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
@@ -26,6 +29,8 @@ import seedu.address.model.person.role.committee.Position;
 import seedu.address.model.person.role.sponsor.Sponsor;
 import seedu.address.model.person.role.volunteer.Volunteer;
 import seedu.address.model.person.role.volunteer.VolunteerRole;
+
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -221,6 +226,25 @@ public class ParserUtil {
         };
     }
 
+    public static Map<Event, Set<Role>> parseEventRoles(List<String> eventRoleString) throws ParseException {
+        Map<Event, Set<Role>> eventRoles = new HashMap<>();
+        for (String eventRole : eventRoleString) {
+            String prefix = Pattern.quote(PREFIX_ROLE.getPrefix());
+            String[] parts = eventRole.split("\\s+" + prefix, 2);
+            if (parts.length == 2) {
+                Event event = parseEvent(parts[0].trim());
+                Set<Role> roles = parseRoles(parts[1].trim());
+                eventRoles.put(event, roles);
+            } else if (parts.length == 1) {
+                Event event = parseEvent(parts[0].trim());
+                eventRoles.put(event, new HashSet<>());
+            } else {
+                throw new ParseException("Invalid event-role format: " + eventRole);
+            }
+        }
+        return eventRoles;
+    }
+
     /**
      * Parses a {@code String role} into a {@code Role}.
      * Leading and trailing whitespaces will be trimmed.
@@ -259,16 +283,13 @@ public class ParserUtil {
         };
     }
 
-    parseEventRoles(String eventRoleString)
-
     /**
      * Parses {@code List<String> roles} into a {@code List<Role>}.
      */
     public static Set<Role> parseRoles(String rolesString) throws ParseException {
         requireNonNull(rolesString);
-        List<String> roles = parseList(rolesString);
         final Set<Role> roleSet = new HashSet<>();
-        for (String roleName : roles) {
+        for (String roleName : rolesString.split("\\s,\\s")) {
             roleSet.add(parseRole(roleName));
         }
         return roleSet;
@@ -284,23 +305,5 @@ public class ParserUtil {
             eventList.add(parseEvent(eventName));
         }
         return eventList;
-    }
-
-    /**
-     * Parses a {@code String input} of format "[a, b, c]" 
-     * into a {@code List<String>}.
-     */
-    public static List<String> parseList(String input) {
-        // Remove square brackets
-        String trimmed = input.substring(1, input.length() - 1);
-
-        // Split by comma and trim whitespace
-        String[] elements = trimmed.split(",");
-        List<String> result = new ArrayList<>();
-        for (String element : elements) {
-            result.add(element.trim());
-        }
-        
-        return result;
     }
 }
