@@ -9,8 +9,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -98,10 +99,9 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Set<Event> updatedEvents = editPersonDescriptor.getEvents().orElse(personToEdit.getEvents());
-        Set<Role> updatedRoles = editPersonDescriptor.getRoles().orElse(personToEdit.getRoles());
+        Map<Event, Set<Role>> updatedEventRoles = editPersonDescriptor.getEventRoles().orElse(personToEdit.getEventRoles());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedEvents, updatedRoles);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedEventRoles);
     }
 
     @Override
@@ -135,8 +135,7 @@ public class EditCommand extends Command {
         private Name name;
         private Phone phone;
         private Email email;
-        private Set<Event> events;
-        private Set<Role> roles;
+        private Map<Event, Set<Role>> eventRoles;
 
         public EditPersonDescriptor() {}
 
@@ -148,15 +147,14 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
-            setEvents(toCopy.events);
-            setRoles(toCopy.roles);
+            setEventRoles(toCopy.eventRoles);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, events, roles);
+            return CollectionUtil.isAnyNonNull(name, phone, email, eventRoles);
         }
 
         public void setName(Name name) {
@@ -183,29 +181,15 @@ public class EditCommand extends Command {
             return Optional.ofNullable(email);
         }
 
-        public void setEvents(Set<Event> events) {
-            this.events = (events != null) ? new HashSet<>(events) : null;
-        }
-
-        public Optional<Set<Event>> getEvents() {
-            return (events != null) ? Optional.of(Collections.unmodifiableSet(events)) : Optional.empty();
+        public void setEventRoles(Map<Event, Set<Role>> eventRoles) {
+            this.eventRoles = (eventRoles != null) ? new HashMap<>(eventRoles) : null;
         }
 
         /**
-         * Sets {@code roles} to this object's {@code roles}.
-         * A defensive copy of {@code roles} is used internally.
+         * Returns an unmodifiable map of event roles.
          */
-        public void setRoles(Set<Role> roles) {
-            this.roles = (roles != null) ? new HashSet<>(roles) : null;
-        }
-
-        /**
-         * Returns an unmodifiable tag set, which throws {@code UnsupportedOperationException}
-         * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code roles} is null.
-         */
-        public Optional<Set<Role>> getRoles() {
-            return (roles != null) ? Optional.of(Collections.unmodifiableSet(roles)) : Optional.empty();
+        public Optional<Map<Event, Set<Role>>> getEventRoles() {
+            return (eventRoles != null) ? Optional.of(Collections.unmodifiableMap(eventRoles)) : Optional.empty();
         }
 
         @Override
@@ -222,8 +206,7 @@ public class EditCommand extends Command {
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
-                    && Objects.equals(events, otherEditPersonDescriptor.events)
-                    && Objects.equals(roles, otherEditPersonDescriptor.roles);
+                    && Objects.equals(eventRoles, otherEditPersonDescriptor.eventRoles);
         }
 
         @Override
@@ -232,8 +215,7 @@ public class EditCommand extends Command {
                     .add("name", name)
                     .add("phone", phone)
                     .add("email", email)
-                    .add("events", events)
-                    .add("roles", roles)
+                    .add("eventRoles", eventRoles)
                     .toString();
         }
     }

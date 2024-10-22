@@ -34,7 +34,8 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_EVENT, PREFIX_ROLE);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_EVENT);
+
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_EVENT)
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -45,14 +46,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-        List<Event> events = ParserUtil.parseEvents(argMultimap.getAllValues(PREFIX_EVENT));
-        List<Set<Role>> roleList = argMultimap.getAllValues(PREFIX_ROLE).stream()
-                .map(roles -> ParserUtil.parseRoles(roles))
-                .collect(Collectors.toList());
-        Map<Event, Set<Role>> eventRoles = new HashMap<>();
-        for (int i = 0; i < events.size(); i++) {
-            eventRoles.put(events.get(i), roleList.get(i));
-        }
+        Map<Event, Set<Role>> eventRoles = ParserUtil.parseEventRoles(argMultimap.getAllValues(PREFIX_EVENT));
 
         Person person = new Person(name, phone, email, eventRoles);
 

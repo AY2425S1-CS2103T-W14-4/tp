@@ -259,6 +259,8 @@ public class ParserUtil {
         };
     }
 
+    parseEventRoles(String eventRoleString)
+
     /**
      * Parses {@code List<String> roles} into a {@code List<Role>}.
      */
