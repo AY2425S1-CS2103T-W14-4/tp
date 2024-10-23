@@ -15,13 +15,12 @@ import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
-import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_ATHLETE;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_VOLUNTEER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_BOB_AS_VOLUNTEER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_ATHLETE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_VOLUNTEER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -47,21 +46,16 @@ public class AddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
-    public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withRoles(VALID_ROLE_VOLUNTEER).build();
-
-        // whitespace only preamble
-        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                                   + EVENT_DESC_BOB + ROLE_DESC_VOLUNTEER, new AddCommand(expectedPerson));
-
-
-        // multiple roles - all accepted
-        Person expectedPersonMultipleRoles = new PersonBuilder(BOB).withRoles(VALID_ROLE_VOLUNTEER, VALID_ROLE_ATHLETE)
+    public void parse_allFieldsPresent_success() throws Exception {
+        Person expectedPerson = new PersonBuilder(BOB)
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withEventRoles(VALID_EVENT_ROLE_BOB_AS_VOLUNTEER)
                 .build();
-        assertParseSuccess(parser,
-                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + EVENT_DESC_BOB
-                + ROLE_DESC_ATHLETE + ROLE_DESC_VOLUNTEER,
-                new AddCommand(expectedPersonMultipleRoles));
+
+        String input = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + EVENT_DESC_BOB + ROLE_DESC_VOLUNTEER;
+        assertParseSuccess(parser, input, new AddCommand(expectedPerson));
     }
 
     @Test

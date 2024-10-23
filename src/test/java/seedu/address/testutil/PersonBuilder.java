@@ -1,10 +1,12 @@
 package seedu.address.testutil;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.event.Event;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -77,7 +79,8 @@ public class PersonBuilder {
      * building.
      */
     public PersonBuilder withEventRoles(String ... eventRoles) {
-        this.eventRoles.put(new Event(DEFAULT_EVENT), SampleDataUtil.getRoleSet(eventRoles));
+        Map<Event, Set<Role>> eventRoleMap = ParserUtil.parseEventRoles(Arrays.asList(eventRoles));
+        this.eventRoles = eventRoleMap;
         return this;
     }
 
@@ -100,4 +103,5 @@ public class PersonBuilder {
     public Person build() {
         return new Person(name, phone, email, eventRoles);
     }
+
 }

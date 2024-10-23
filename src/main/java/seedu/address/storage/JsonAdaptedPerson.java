@@ -1,11 +1,11 @@
 package seedu.address.storage;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.AbstractMap;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -18,7 +18,6 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.role.Role;
-
 /**
  * Jackson-friendly version of {@link Person}.
  */
@@ -36,7 +35,7 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, 
+            @JsonProperty("email") String email,
             @JsonProperty("eventRoles") Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles) {
         this.name = name;
         this.phone = phone;

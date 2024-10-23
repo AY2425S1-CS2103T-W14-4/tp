@@ -1,8 +1,8 @@
 package seedu.address.model.util;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,7 +24,8 @@ public class SampleDataUtil {
         Map<Event, Set<Role>> eventRoles1 = new HashMap<>();
         eventRoles1.put(new Event("IFG"), getRoleSet("Athlete - COM - Volleyball Women, Tennis"));
         Map<Event, Set<Role>> eventRoles2 = new HashMap<>();
-        eventRoles2.put(new Event("IFG"), getRoleSet("Volunteer - Photographer", "Committee - Publicity - Project Director"));
+        eventRoles2.put(new Event("IFG"), getRoleSet("Volunteer - Photographer",
+                "Committee - Publicity - Project Director"));
         Map<Event, Set<Role>> eventRoles3 = new HashMap<>();
         eventRoles3.put(new Event("SUNIG"), getRoleSet("Sponsor - OATSIDE"));
         Map<Event, Set<Role>> eventRoles4 = new HashMap<>();

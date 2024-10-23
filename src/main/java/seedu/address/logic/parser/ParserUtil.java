@@ -1,15 +1,16 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
@@ -29,8 +30,6 @@ import seedu.address.model.person.role.committee.Position;
 import seedu.address.model.person.role.sponsor.Sponsor;
 import seedu.address.model.person.role.volunteer.Volunteer;
 import seedu.address.model.person.role.volunteer.VolunteerRole;
-
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -236,7 +235,10 @@ public class ParserUtil {
         Map<Event, Set<Role>> eventRoles = new HashMap<>();
         for (String eventRole : eventRoleString) {
             String prefix = Pattern.quote(PREFIX_ROLE.getPrefix());
-            String[] parts = eventRole.split("\\s+" + prefix, 2);
+            String[] parts = eventRole.split(prefix);
+            if (eventRole.split(prefix)[0].trim().isEmpty()) {
+                throw new ParseException(Event.MESSAGE_CONSTRAINTS);
+            }
             if (parts.length == 2) {
                 Event event = parseEvent(parts[0].trim());
                 Set<Role> roles = parseRoles(parts[1].trim());

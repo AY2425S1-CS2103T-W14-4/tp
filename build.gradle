@@ -23,6 +23,9 @@ checkstyle {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+    testLogging {
+        showStandardStreams = true
+    }
 }
 
 task coverage(type: JacocoReport) {
@@ -39,6 +42,11 @@ task coverage(type: JacocoReport) {
         xml.required = true
     }
 }
+
+tasks.withType(Jar) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 
 dependencies {
     String jUnitVersion = '5.4.0'

@@ -37,12 +37,25 @@ public class CommandTestUtil {
     public static final String VALID_ROLE_ATHLETE = "Athlete - COM - Swimming Men, Tennis";
     public static final String VALID_ROLE_SPONSOR = "Sponsor - OATSIDE";
     public static final String VALID_ROLE_VOLUNTEER = "Volunteer - Photographer";
-    public static final String VALID_EVENT_ROLE_AMY_AS_ATHLETE = VALID_EVENT_AMY + " " + PREFIX_ROLE + VALID_ROLE_ATHLETE;
-    public static final String VALID_EVENT_ROLE_AMY_AS_SPONSOR = VALID_EVENT_AMY + " " + PREFIX_ROLE + VALID_ROLE_SPONSOR;
-    public static final String VALID_EVENT_ROLE_AMY_AS_VOLUNTEER = VALID_EVENT_AMY + " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
-    public static final String VALID_EVENT_ROLE_BOB_AS_ATHLETE = VALID_EVENT_BOB + " " + PREFIX_ROLE + VALID_ROLE_ATHLETE;
-    public static final String VALID_EVENT_ROLE_BOB_AS_SPONSOR = VALID_EVENT_BOB + " " + PREFIX_ROLE + VALID_ROLE_SPONSOR;
-    public static final String VALID_EVENT_ROLE_BOB_AS_VOLUNTEER = VALID_EVENT_BOB + " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
+    public static final String VALID_EVENT_ROLE_AMY_AS_ATHLETE = VALID_EVENT_AMY + " "
+            + PREFIX_ROLE + VALID_ROLE_ATHLETE;
+    public static final String VALID_EVENT_ROLE_AMY_AS_SPONSOR = VALID_EVENT_AMY + " "
+            + PREFIX_ROLE + VALID_ROLE_SPONSOR;
+    public static final String VALID_EVENT_ROLE_AMY_AS_VOLUNTEER = VALID_EVENT_AMY + " "
+            + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
+    public static final String VALID_EVENT_ROLE_BOB_AS_ATHLETE = VALID_EVENT_BOB + " "
+            + PREFIX_ROLE + VALID_ROLE_ATHLETE;
+    public static final String VALID_EVENT_ROLE_BOB_AS_SPONSOR = VALID_EVENT_BOB + " "
+            + PREFIX_ROLE + VALID_ROLE_SPONSOR;
+    public static final String VALID_EVENT_ROLE_BOB_AS_VOLUNTEER = VALID_EVENT_BOB + " "
+            + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
+    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
+    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
+    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
+    public static final String INVALID_EVENT_DESC = " " + PREFIX_EVENT + " "; // event name should not be empty
+    public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "hubby*"; // '*' not allowed in roles
+    public static final String INVALID_EVENT_ROLE_DESC = " " + PREFIX_EVENT + VALID_EMAIL_AMY
+            + " " + PREFIX_ROLE + "hubby*"; // '*' not allowed in roles
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -55,12 +68,14 @@ public class CommandTestUtil {
     public static final String ROLE_DESC_ATHLETE = " " + PREFIX_ROLE + VALID_ROLE_ATHLETE;
     public static final String ROLE_DESC_SPONSOR = " " + PREFIX_ROLE + VALID_ROLE_SPONSOR;
     public static final String ROLE_DESC_VOLUNTEER = " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
-
-    public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
-    public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
-    public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
-    public static final String INVALID_EVENT_DESC = " " + PREFIX_EVENT + " "; // event name should not be empty
-    public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "hubby*"; // '*' not allowed in roles
+    public static final String EVENT_ROLE_DESC_AMY_AS_VOLUNTEER = " " + PREFIX_EVENT + VALID_EVENT_AMY
+            + " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
+    public static final String EVENT_ROLE_DESC_BOB_AS_VOLUNTEER = " " + PREFIX_EVENT + VALID_EVENT_BOB
+            + " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
+    public static final String EVENT_ROLE_DESC_AMY_AS_SPONSOR = " " + PREFIX_EVENT + VALID_EVENT_AMY
+            + " " + PREFIX_ROLE + VALID_ROLE_SPONSOR;
+    public static final String EVENT_ROLE_DESC_BOB_AS_SPONSOR = " " + PREFIX_EVENT + VALID_EVENT_BOB
+            + " " + PREFIX_ROLE + VALID_ROLE_SPONSOR;
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

@@ -55,7 +55,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
             editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
         }
-        parseEventRolesForEdit(argMultimap.getAllValues(PREFIX_EVENT)).ifPresent(editPersonDescriptor::setEventRoles);
+        parseEventRolesForEdit(argMultimap.getAllValues(PREFIX_EVENT)).ifPresent(
+                editPersonDescriptor::setEventRoles);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
@@ -65,7 +66,8 @@ public class EditCommandParser implements Parser<EditCommand> {
     }
 
     /**
-     * Parses {@code List<String> eventRoleString} into a {@code Map<Event, Set<Role>>} if {@code eventRoleString} is non-empty.
+     * Parses {@code List<String> eventRoleString} into a {@code Map<Event, Set<Role>>}
+     * if {@code eventRoleString} is non-empty.
      * If {@code eventRoleString} is empty, it will return an empty Optional.
      *
      * @throws ParseException if the parsing of event roles fails

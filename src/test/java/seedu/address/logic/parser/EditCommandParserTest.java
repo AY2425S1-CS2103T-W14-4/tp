@@ -3,22 +3,26 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.EVENT_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.EVENT_ROLE_DESC_AMY_AS_SPONSOR;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_EVENT_ROLE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_ATHLETE;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_VOLUNTEER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_SPONSOR;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_VOLUNTEER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_ATHLETE;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_VOLUNTEER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EVENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -42,6 +46,9 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 public class EditCommandParserTest {
 
     private static final String ROLE_EMPTY = " " + PREFIX_ROLE;
+
+    private static final String AMY_EVENT_ROLE_DESC_EMPTY_ROLE = EVENT_DESC_AMY + ROLE_EMPTY;
+    private static final String AMY_EVENT_ROLE_EMPTY_ROLE = VALID_EVENT_AMY + ROLE_EMPTY;
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
@@ -80,7 +87,7 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // invalid name
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
         assertParseFailure(parser, "1" + INVALID_EMAIL_DESC, Email.MESSAGE_CONSTRAINTS); // invalid email
-        assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid role
+        assertParseFailure(parser, "1" + INVALID_EVENT_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid role
 
         // invalid phone followed by valid email
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
@@ -102,14 +109,16 @@ public class EditCommandParserTest {
     @Test
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = INDEX_SECOND_PERSON;
-        String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + ROLE_DESC_ATHLETE
-                           + EMAIL_DESC_AMY + NAME_DESC_AMY + ROLE_DESC_VOLUNTEER;
+        String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + EVENT_ROLE_DESC_AMY_AS_SPONSOR
+                           + EMAIL_DESC_AMY + NAME_DESC_AMY;
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
-                .withEventRoles(VALID_EVENT_ROLE_AMY_AS_ATHLETE, VALID_EVENT_ROLE_AMY_AS_VOLUNTEER).build();
+                .withEventRoles(VALID_EVENT_ROLE_AMY_AS_SPONSOR).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
+        System.out.println(parser.parse(userInput));
+        System.out.println(expectedCommand);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
@@ -146,9 +155,13 @@ public class EditCommandParserTest {
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
-        // roles
-        userInput = targetIndex.getOneBased() + ROLE_DESC_VOLUNTEER;
-        descriptor = new EditPersonDescriptorBuilder().withEventRoles(VALID_EVENT_ROLE_AMY_AS_VOLUNTEER).build();
+
+
+        // event roles
+        userInput = targetIndex.getOneBased() + " " + PREFIX_EVENT.getPrefix()
+                        + VALID_EVENT_ROLE_AMY_AS_VOLUNTEER;
+        descriptor = new EditPersonDescriptorBuilder()
+                        .withEventRoles(VALID_EVENT_ROLE_AMY_AS_VOLUNTEER).build();
         expectedCommand = new EditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -186,11 +199,12 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_resetRoles_success() {
+    public void parse_resetEventRoles_success() {
         Index targetIndex = INDEX_THIRD_PERSON;
-        String userInput = targetIndex.getOneBased() + ROLE_EMPTY;
+        String userInput = targetIndex.getOneBased() + AMY_EVENT_ROLE_DESC_EMPTY_ROLE;
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withEventRoles().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withEventRoles(AMY_EVENT_ROLE_EMPTY_ROLE).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
