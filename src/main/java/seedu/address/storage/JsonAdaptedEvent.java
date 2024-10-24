@@ -51,4 +51,9 @@ public class JsonAdaptedEvent {
         final EventName eventName = new EventName(name);
         return new Event(eventName);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -22,11 +22,15 @@ class JsonSerializableAddressBook {
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
 
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("events") List<JsonAdaptedEvent> events,
-                                       @JsonProperty("persons") List<JsonAdaptedPerson> persons) {
-        if (events != null) {
-            this.events.addAll(events);
-        }
+    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons) {
+        persons.stream()
+                .filter(person -> person.getEventRoles() != null)
+                .flatMap(person -> person.getEventRoles().keySet().stream())
+                .forEach(event -> {
+                    if (events.stream().noneMatch(e -> e.getEventName().equals(event.getEventName()))) {
+                        events.add(event);
+                    }
+                });
 
         if (persons != null) {
             this.persons.addAll(persons);

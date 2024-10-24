@@ -31,7 +31,8 @@ public class TypicalPersons {
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com")
             .withPhone("98765432")
-            .withEventRoles("SUNIG" + PREFIX_ROLE + "Athlete - FASS - Swimming Men" + PREFIX_ROLE + "Volunteer - Emcee")
+            .withEventRoles("SUNIG" + PREFIX_ROLE + "Volunteer - Emcee" + PREFIX_ROLE
+                    + "Athlete - FASS - Swimming Men")
             .build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz")
             .withPhone("95352563")

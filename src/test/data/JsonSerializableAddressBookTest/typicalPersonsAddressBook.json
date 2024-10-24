@@ -4,35 +4,20 @@
     "name" : "Alice Pauline", 
     "phone" : "94351253",
     "email" : "alice@example.com",
-<<<<<<< HEAD
     "eventRoles": {
       "IFG": ["Athlete - COM - Volleyball Women, Floorball Women"]
     }
-=======
-    "personEvents": [{
-      "name": "IFG"
-    }],
-    "roles" : [ "Athlete - COM - Volleyball Women, Floorball Women" ]
->>>>>>> d78b7452021e99acbd2c6ee0ce6d9fe1366bd640
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432", 
     "email" : "johnd@example.com",
-<<<<<<< HEAD
     "eventRoles": {
       "SUNIG": ["Volunteer - Emcee", "Athlete - FASS - Swimming Men"]
     }
-=======
-    "personEvents": [{
-      "name": "SUNIG"
-    }],
-    "roles" : [ "Volunteer - Emcee", "Athlete - FASS - Swimming Men" ]
->>>>>>> d78b7452021e99acbd2c6ee0ce6d9fe1366bd640
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
     "email" : "heinz@example.com",
-<<<<<<< HEAD
     "eventRoles": {
       "AUG": []
     }
@@ -43,70 +28,26 @@
     "eventRoles": {
       "IVP": ["Sponsor - OATSIDE"]
     }
-=======
-    "personEvents": [{
-      "name": "AUG"
-    }],
-    "roles" : [ ]
-  }, {
-    "name" : "Daniel Meier",
-    "phone" : "87652533",
-    "email" : "cornelia@example.com",
-    "personEvents": [{
-      "name": "IVP"
-    }],
-    "roles" : [ "Sponsor - OATSIDE" ]
->>>>>>> d78b7452021e99acbd2c6ee0ce6d9fe1366bd640
   }, {
     "name" : "Elle Meyer",
     "phone" : "9482224",
     "email" : "werner@example.com",
-<<<<<<< HEAD
     "eventRoles": {
       "IFG": []
     }
-=======
-    "personEvents": [{
-      "name": "IFG"
-    }],
-    "roles" : [ ]
->>>>>>> d78b7452021e99acbd2c6ee0ce6d9fe1366bd640
   }, {
     "name" : "Fiona Kunz",
     "phone" : "9482427",
     "email" : "lydia@example.com",
-<<<<<<< HEAD
     "eventRoles": {
       "SUNIG": ["Committee - Publicity - Project Director"]
     }
-=======
-    "personEvents": [{
-      "name": "SUNIG"
-    }],
-    "roles" : [ "Committee - Publicity - Project Director"]
->>>>>>> d78b7452021e99acbd2c6ee0ce6d9fe1366bd640
   }, {
     "name" : "George Best",
     "phone" : "9482442",
     "email" : "anna@example.com",
-<<<<<<< HEAD
     "eventRoles": {
       "IVP": ["Committee - Sports - Vice Sports Director - BIZ"]
     }
-=======
-    "personEvents": [{
-      "name": "IVP"
-    }],
-    "roles" : [ "Committee - Sports - Vice Sports Director - BIZ"]
-  } ],
-  "events": [ {
-    "name": "IFG"
-  }, {
-    "name": "AUG"
-  }, {
-    "name": "SUNIG"
-  }, {
-    "name": "IVP"
->>>>>>> d78b7452021e99acbd2c6ee0ce6d9fe1366bd640
   } ]
 }

@@ -114,4 +114,8 @@ class JsonAdaptedPerson {
 
         return new Person(modelName, modelPhone, modelEmail, modelEventRoles);
     }
+
+    public Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> getEventRoles() {
+        return eventRoles;
+    }
 }
