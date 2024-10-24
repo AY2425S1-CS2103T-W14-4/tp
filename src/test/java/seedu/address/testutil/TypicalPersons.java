@@ -27,8 +27,7 @@ public class TypicalPersons {
     public static final Person ALICE = new PersonBuilder().withName("Alice Pauline")
             .withEmail("alice@example.com")
             .withPhone("94351253")
-            .withEventRoles("IFG" + PREFIX_ROLE + "Athlete - COM - Volleyball Women" + PREFIX_ROLE
-                    + "Athlete - COM - Floorball Women")
+            .withEventRoles("IFG" + PREFIX_ROLE + "Athlete - COM - Volleyball Women, Floorball Women")
             .build();
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withEmail("johnd@example.com")
