@@ -239,15 +239,15 @@ public class ParserUtil {
             if (eventRole.split(prefix)[0].trim().isEmpty()) {
                 throw new ParseException(Event.MESSAGE_CONSTRAINTS);
             }
-            if (parts.length == 2) {
-                Event event = parseEvent(parts[0].trim());
-                Set<Role> roles = parseRoles(parts[1].trim());
-                eventRoles.put(event, roles);
-            } else if (parts.length == 1) {
+            if (parts.length == 1) {
                 Event event = parseEvent(parts[0].trim());
                 eventRoles.put(event, new HashSet<>());
             } else {
-                throw new ParseException("Invalid event-role format: " + eventRole);
+                Event event = parseEvent(parts[0].trim());
+                eventRoles.put(event, new HashSet<>());
+                for (String role : Arrays.copyOfRange(parts, 1, parts.length)) {
+                    eventRoles.get(event).add(parseRole(role.trim()));
+                }
             }
         }
         return eventRoles;
@@ -297,10 +297,10 @@ public class ParserUtil {
      *
      * @throws ParseException if any of the given roles are invalid.
      */
-    public static Set<Role> parseRoles(String rolesString) throws ParseException {
+    private static Set<Role> parseRoles(String rolesString) throws ParseException {
         requireNonNull(rolesString);
         final Set<Role> roleSet = new HashSet<>();
-        for (String roleName : rolesString.split("\\s,\\s")) {
+        for (String roleName : rolesString.split("\\s" + PREFIX_ROLE + "\\s")) {
             roleSet.add(parseRole(roleName));
         }
         return roleSet;

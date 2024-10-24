@@ -70,7 +70,9 @@ public class PersonBuilder {
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
      */
     public PersonBuilder withEvents(String ... events) {
-        this.eventRoles.put(new Event(DEFAULT_EVENT), new HashSet<>());
+        for (String event : events) {
+            this.eventRoles.put(new Event(event), new HashSet<>());
+        }
         return this;
     }
 

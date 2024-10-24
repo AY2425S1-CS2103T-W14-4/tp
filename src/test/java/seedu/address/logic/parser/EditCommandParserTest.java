@@ -92,15 +92,6 @@ public class EditCommandParserTest {
         // invalid phone followed by valid email
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
 
-        // while parsing {@code PREFIX_ROLE} alone will reset the roles of the {@code Person} being edited,
-        // parsing it together with a valid role results in error
-        assertParseFailure(parser, "1" + ROLE_DESC_VOLUNTEER + ROLE_DESC_ATHLETE + ROLE_EMPTY,
-                Role.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "1" + ROLE_DESC_VOLUNTEER + ROLE_EMPTY + ROLE_DESC_ATHLETE,
-                Role.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "1" + ROLE_EMPTY + ROLE_DESC_VOLUNTEER + ROLE_DESC_ATHLETE,
-                Role.MESSAGE_CONSTRAINTS);
-
         // multiple invalid values, but only the first invalid value is captured
         assertParseFailure(parser, "1" + INVALID_NAME_DESC + INVALID_EMAIL_DESC + VALID_PHONE_AMY,
                 Name.MESSAGE_CONSTRAINTS);
@@ -117,8 +108,6 @@ public class EditCommandParserTest {
                 .withEventRoles(VALID_EVENT_ROLE_AMY_AS_SPONSOR).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
-        System.out.println(parser.parse(userInput));
-        System.out.println(expectedCommand);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 

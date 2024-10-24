@@ -2,12 +2,19 @@ package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EVENT_ROLE_AMY_AS_ATHLETE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_ATHLETE;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -34,7 +41,6 @@ public class ParserUtilTest {
     private static final String VALID_PHONE = "123456";
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_ROLE_1 = "friend";
-    private static final String VALID_ROLE_2 = "neighbour";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -273,25 +279,29 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseRoles_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseRoles(null));
+    public void parseEventRoles_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseEventRoles(null));
+    }
+    @Test
+    public void parseEventRoles_listWithInvalidRole_throwsParseException() {
+        List<String> invalidEventRoles = Arrays.asList(VALID_EVENT_ROLE_AMY_AS_ATHLETE + ", "
+                + VALID_ROLE_1 + ", " + INVALID_ROLE);
+
+        assertThrows(ParseException.class, () -> ParserUtil.parseEventRoles(invalidEventRoles));
+    }
+    @Test
+    public void parseEventRoles_emptyList_returnsEmptySet() {
+        assertTrue(ParserUtil.parseEventRoles(new ArrayList<>()).isEmpty());
     }
 
     @Test
-    public void parseRoles_collectionWithInvalidRoles_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseRoles(VALID_ROLE_1 + ", " + INVALID_ROLE));
-    }
+    public void parseEventRoles_listWithValidRoles_returnsMap() {
+        List<String> validEventRoles = Arrays.asList(VALID_EVENT_ROLE_AMY_AS_ATHLETE);
+        Map<Event, Set<Role>> actualEventRoleMap = ParserUtil.parseEventRoles(validEventRoles);
+        Map<Event, Set<Role>> expectedEventRoleMap = new HashMap<>();
+        expectedEventRoleMap.put(new Event(VALID_EVENT_AMY),
+                new HashSet<>(Arrays.asList(new Role(VALID_ROLE_ATHLETE))));
 
-    @Test
-    public void parseRoles_emptyCollection_returnsEmptySet() {
-        assertTrue(ParserUtil.parseRoles("").isEmpty());
-    }
-
-    @Test
-    public void parseRoles_collectionWithValidRoles_returnsRoleSet() {
-        Set<Role> actualRoleSet = ParserUtil.parseRoles(VALID_ROLE_1 + ", " + VALID_ROLE_2);
-        Set<Role> expectedRoleSet = new HashSet<Role>(Arrays.asList(new Role(VALID_ROLE_1), new Role(VALID_ROLE_2)));
-
-        assertEquals(expectedRoleSet, actualRoleSet);
+        assertEquals(expectedEventRoleMap, actualEventRoleMap);
     }
 }

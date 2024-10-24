@@ -4,50 +4,43 @@
     "name" : "Alice Pauline",
     "phone" : "94351253",
     "email" : "alice@example.com",
-    "eventRoles" : {
-      "IFG": ["Athlete - COM - Volleyball Women, Floorball Women"]
-    }
+    "events": [ "IFG" ],
+    "roles" : [ "Athlete - COM - Volleyball Women, Floorball Women" ]
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
     "email" : "johnd@example.com",
-    "eventRoles" : {
-      "SUNIG": ["Volunteer - Emcee", "Athlete - FASS - Swimming Men"]
-    }
+    "events": [ "SUNIG" ],
+    "roles" : [ "Volunteer - Emcee", "Athlete - FASS - Swimming Men" ]
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
     "email" : "heinz@example.com",
-    "eventRoles" : {
-      "AUG": []
-    }
+    "events": [ "AUG" ],
+    "roles" : [ ]
   }, {
     "name" : "Daniel Meier",
     "phone" : "87652533",
     "email" : "cornelia@example.com",
-    "eventRoles" : {
-      "IVP": ["Sponsor - OATSIDE"]
-    }
+    "events": [ "IVP" ],
+    "roles" : [ "Sponsor - OATSIDE" ]
   }, {
     "name" : "Elle Meyer",
     "phone" : "9482224",
     "email" : "werner@example.com",
-    "eventRoles" : {
-      "IFG": []
-    }
+    "events": [ "IFG" ],
+    "roles" : [ ]
   }, {
     "name" : "Fiona Kunz",
     "phone" : "9482427",
     "email" : "lydia@example.com",
-    "eventRoles" : {
-      "SUNIG": ["Committee - Publicity - Project Director"]
-    }
+    "events": [ "SUNIG" ],
+    "roles" : [ "Committee - Publicity - Project Director"]
   }, {
     "name" : "George Best",
     "phone" : "9482442",
     "email" : "anna@example.com",
-    "eventRoles" : {
-      "IVP": ["Committee - Sports - Vice Sports Director - BIZ"]
-    }
+    "events": [ "IVP" ],
+    "roles" : [ "Committee - Sports - Vice Sports Director - BIZ"]
   } ]
 }
