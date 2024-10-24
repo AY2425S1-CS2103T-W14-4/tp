@@ -172,7 +172,10 @@ public class AddressBook implements ReadOnlyAddressBook {
             return false;
         }
 
-        return persons.equals(otherAddressBook.persons) && events.equals(otherAddressBook.events);
+        return persons.asUnmodifiableObservableList().sorted()
+                .equals(otherAddressBook.persons.asUnmodifiableObservableList().sorted())
+                && events.asUnmodifiableObservableList().sorted()
+                .equals(otherAddressBook.events.asUnmodifiableObservableList().sorted());
     }
 
     @Override

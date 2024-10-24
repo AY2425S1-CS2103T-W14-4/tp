@@ -1,12 +1,16 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
@@ -235,6 +239,34 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code List<String> eventRoleString} into a {@code Map<Event, Set<Role>>}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code eventRoleString} is invalid.
+     */
+    public static Map<Event, Set<Role>> parseEventRoles(List<String> eventRoleString) throws ParseException {
+        Map<Event, Set<Role>> eventRoles = new HashMap<>();
+        for (String eventRole : eventRoleString) {
+            String prefix = Pattern.quote(PREFIX_ROLE.getPrefix());
+            String[] parts = eventRole.split(prefix);
+            if (eventRole.split(prefix)[0].trim().isEmpty()) {
+                throw new ParseException(EventName.MESSAGE_CONSTRAINTS);
+            }
+            if (parts.length == 1) {
+                Event event = parseEvent(parts[0].trim());
+                eventRoles.put(event, new HashSet<>());
+            } else {
+                Event event = parseEvent(parts[0].trim());
+                eventRoles.put(event, new HashSet<>());
+                for (String role : Arrays.copyOfRange(parts, 1, parts.length)) {
+                    eventRoles.get(event).add(parseRole(role.trim()));
+                }
+            }
+        }
+        return eventRoles;
+    }
+
+    /**
      * Parses a {@code String role} into a {@code Role}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -273,27 +305,17 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code Collection<String> roles} into a {@code Set<Role>}.
+     * Parses a {@code List<String> events} into a {@code List<Event>}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if any of the given events are invalid.
      */
-    public static Set<Role> parseRoles(Collection<String> roles) throws ParseException {
-        requireNonNull(roles);
-        final Set<Role> roleSet = new HashSet<>();
-        for (String roleName : roles) {
-            roleSet.add(parseRole(roleName));
-        }
-        return roleSet;
-    }
-
-    /**
-     * Parses {@code Collection<String> events} into a {@code Set<Event>}.
-     */
-
-    public static Set<Event> parseEvents(Collection<String> events) throws ParseException {
+    public static List<Event> parseEvents(List<String> events) throws ParseException {
         requireNonNull(events);
-        final Set<Event> eventSet = new HashSet<>();
+        final List<Event> eventList = new ArrayList<>();
         for (String eventName: events) {
-            eventSet.add(parseEvent(eventName));
+            eventList.add(parseEvent(eventName));
         }
-        return eventSet;
+        return eventList;
     }
 }

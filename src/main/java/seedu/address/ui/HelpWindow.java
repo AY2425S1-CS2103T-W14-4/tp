@@ -55,6 +55,7 @@ public class HelpWindow extends UiPart<Stage> {
             while ((line = br.readLine()) != null) {
                 helpMessage.append(line).append("\n");
             }
+            br.close();
         } catch (IOException e) {
             System.out.println("Error! Could not retrieve help message from file.");
             return "Failed to load help message.";

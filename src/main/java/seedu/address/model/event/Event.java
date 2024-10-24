@@ -51,7 +51,7 @@ public class Event {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("name", name)
+                .add("name", name.toString())
                 .toString();
     }
 }

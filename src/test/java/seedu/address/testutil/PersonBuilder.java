@@ -1,8 +1,12 @@
 package seedu.address.testutil;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.event.Event;
 import seedu.address.model.event.EventName;
 import seedu.address.model.person.Email;
@@ -24,8 +28,7 @@ public class PersonBuilder {
     private Name name;
     private Phone phone;
     private Email email;
-    private Set<Event> events;
-    private Set<Role> roles;
+    private Map<Event, Set<Role>> eventRoles;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -34,9 +37,8 @@ public class PersonBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
-        events = new HashSet<>();
-        events.add(new Event(DEFAULT_EVENT_NAME));
-        roles = new HashSet<>();
+        eventRoles = new HashMap<>();
+        eventRoles.put(new Event(DEFAULT_EVENT_NAME), new HashSet<>());
     }
 
     /**
@@ -46,8 +48,7 @@ public class PersonBuilder {
         name = personToCopy.getName();
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
-        events = new HashSet<>(personToCopy.getEvents());
-        roles = new HashSet<>(personToCopy.getRoles());
+        eventRoles = new HashMap<>(personToCopy.getEventRoles());
     }
 
     /**
@@ -62,7 +63,7 @@ public class PersonBuilder {
      * Parses the {@code roles} into a {@code Set<Role>} and set it to the {@link Person} that we are building.
      */
     public PersonBuilder withRoles(String ... roles) {
-        this.roles = SampleDataUtil.getRoleSet(roles);
+        this.eventRoles.put(new Event(DEFAULT_EVENT_NAME), SampleDataUtil.getRoleSet(roles));
         return this;
     }
 
@@ -70,7 +71,19 @@ public class PersonBuilder {
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@link Person} that we are building.
      */
     public PersonBuilder withEvents(String ... events) {
-        this.events = SampleDataUtil.getEventSet(events);
+        for (String event : events) {
+            this.eventRoles.put(new Event(new EventName(event)), new HashSet<>());
+        }
+        return this;
+    }
+
+    /**
+     * Parses the {@code eventRoles} into a {@code Map<Event, Set<Role>>} and set it to the {@code Person} that we are
+     * building.
+     */
+    public PersonBuilder withEventRoles(String ... eventRoles) {
+        Map<Event, Set<Role>> eventRoleMap = ParserUtil.parseEventRoles(Arrays.asList(eventRoles));
+        this.eventRoles = eventRoleMap;
         return this;
     }
 
@@ -91,7 +104,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, events, roles);
+        return new Person(name, phone, email, eventRoles);
     }
 
 }

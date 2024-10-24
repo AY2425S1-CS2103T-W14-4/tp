@@ -18,6 +18,7 @@ import seedu.address.testutil.PersonBuilder;
 
 public class PersonTest {
 
+    @SuppressWarnings("unlikely-arg-type")
     @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
         Person person = new PersonBuilder().build();
@@ -101,8 +102,7 @@ public class PersonTest {
     @Test
     public void toStringMethod() {
         String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
-                          + ", email=" + ALICE.getEmail() + ", events=" + ALICE.getEvents()
-                          + ", roles=" + ALICE.getRoles() + "}";
+                          + ", email=" + ALICE.getEmail() + ", eventRoles=" + ALICE.getEventRoles() + "}";
         assertEquals(expected, ALICE.toString());
     }
 }
