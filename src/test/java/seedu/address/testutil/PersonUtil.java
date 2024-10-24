@@ -16,7 +16,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.role.Role;
 
 /**
- * A utility class for Person.
+ * A utility class for {@link Person}.
  */
 public class PersonUtil {
     /**
@@ -27,15 +27,15 @@ public class PersonUtil {
     }
 
     /**
-     * Returns the part of command string for the given {@code person}'s details.
+     * Returns the part of command string for the given {@link Person}'s details.
      */
     public static String getPersonDetails(Person person) {
         StringBuilder sb = new StringBuilder();
-        sb.append(PREFIX_NAME).append(person.getName().fullName).append(" ");
+        sb.append(PREFIX_NAME).append(person.getName()).append(" ");
         sb.append(PREFIX_PHONE).append(person.getPhone().value).append(" ");
         sb.append(PREFIX_EMAIL).append(person.getEmail().value).append(" ");
         person.getEvents().forEach(
-                e -> sb.append(PREFIX_EVENT).append(e.value).append(" ")
+                e -> sb.append(PREFIX_EVENT).append(e.getName()).append(" ")
         );
         person.getRoles().forEach(
             s -> sb.append(PREFIX_ROLE).append(s.getRoleName()).append(" ")
@@ -48,7 +48,7 @@ public class PersonUtil {
      */
     public static String getEditPersonDescriptorDetails(EditPersonDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
-        descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
+        descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name).append(" "));
         descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
         descriptor.getEmail().ifPresent(email -> sb.append(PREFIX_EMAIL).append(email.value).append(" "));
 
@@ -58,7 +58,7 @@ public class PersonUtil {
                 sb.append(PREFIX_EVENT);
             } else {
                 eventRoles.forEach((e, r) -> {
-                    sb.append(PREFIX_EVENT).append(e.value).append(" ");
+                    sb.append(PREFIX_EVENT).append(e.getName()).append(" ");
                     r.forEach(s -> sb.append(PREFIX_ROLE).append(s.getRoleName()).append(" "));
                 });
             }

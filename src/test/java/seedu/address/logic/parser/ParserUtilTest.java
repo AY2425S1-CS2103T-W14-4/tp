@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.event.Event;
+import seedu.address.model.event.EventName;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
@@ -35,11 +36,13 @@ public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_EMAIL = "example.com";
+    private static final String INVALID_EVENT_NAME = "   ";
     private static final String INVALID_ROLE = "#friend";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_EMAIL = "rachel@example.com";
+    private static final String VALID_EVENT_NAME = "IFG";
     private static final String VALID_ROLE_1 = "friend";
 
     private static final String WHITESPACE = " \t\r\n";
@@ -134,26 +137,26 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseEvent_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseEvent((String) null));
+    public void parseEventName_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseEventName((String) null));
     }
 
     @Test
-    public void parseEvent_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseEvent(" "));
+    public void parseEventName_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseEventName(INVALID_EVENT_NAME));
     }
 
     @Test
-    public void parseEvent_validValueWithoutWhitespace_returnsEvent() {
-        Event expectedEvent = new Event("Valid Event");
-        assertEquals(expectedEvent, ParserUtil.parseEvent("Valid Event"));
+    public void parseEventName_validValueWithoutWhitespace_returnsEvent() {
+        EventName expectedEvent = new EventName(VALID_EVENT_NAME);
+        assertEquals(expectedEvent, ParserUtil.parseEventName(VALID_EVENT_NAME));
     }
 
     @Test
-    public void parseEvent_validValueWithWhitespace_returnsTrimmedEvent() {
-        String eventWithWhitespace = WHITESPACE + "Valid Event" + WHITESPACE;
-        Event expectedEvent = new Event("Valid Event");
-        assertEquals(expectedEvent, ParserUtil.parseEvent(eventWithWhitespace));
+    public void parseEventName_validValueWithWhitespace_returnsTrimmedEvent() {
+        String eventWithWhitespace = WHITESPACE + VALID_EVENT_NAME + WHITESPACE;
+        EventName expectedEvent = new EventName(VALID_EVENT_NAME);
+        assertEquals(expectedEvent, ParserUtil.parseEventName(eventWithWhitespace));
     }
 
     @Test
@@ -299,7 +302,7 @@ public class ParserUtilTest {
         List<String> validEventRoles = Arrays.asList(VALID_EVENT_ROLE_AMY_AS_ATHLETE);
         Map<Event, Set<Role>> actualEventRoleMap = ParserUtil.parseEventRoles(validEventRoles);
         Map<Event, Set<Role>> expectedEventRoleMap = new HashMap<>();
-        expectedEventRoleMap.put(new Event(VALID_EVENT_AMY),
+        expectedEventRoleMap.put(new Event(new EventName(VALID_EVENT_AMY)),
                 new HashSet<>(Arrays.asList(new Role(VALID_ROLE_ATHLETE))));
 
         assertEquals(expectedEventRoleMap, actualEventRoleMap);

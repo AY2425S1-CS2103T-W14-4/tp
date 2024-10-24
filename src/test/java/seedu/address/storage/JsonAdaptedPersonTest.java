@@ -122,5 +122,4 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, eventRoles);
         assertThrows(IllegalValueException.class, person::toModelType);
     }
-
 }

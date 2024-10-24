@@ -20,7 +20,7 @@ import seedu.address.model.event.Event;
 import seedu.address.model.person.role.Role;
 
 /**
- * Parses input arguments and creates a new EditCommand object
+ * Parses input arguments and creates a new {@link EditCommand} object
  */
 public class EditCommandParser implements Parser<EditCommand> {
 
@@ -29,6 +29,7 @@ public class EditCommandParser implements Parser<EditCommand> {
      * and returns an EditCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
+    @Override
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =

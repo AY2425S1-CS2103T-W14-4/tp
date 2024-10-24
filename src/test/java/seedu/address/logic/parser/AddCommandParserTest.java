@@ -5,6 +5,7 @@ import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.EVENT_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EVENT_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.EVENT_ROLE_DESC_BOB_AS_VOLUNTEER;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EVENT_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
@@ -34,7 +35,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddCommand;
-import seedu.address.model.event.Event;
+import seedu.address.model.event.EventName;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -54,7 +55,8 @@ public class AddCommandParserTest {
                 .withEventRoles(VALID_EVENT_ROLE_BOB_AS_VOLUNTEER)
                 .build();
 
-        String input = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + EVENT_DESC_BOB + ROLE_DESC_VOLUNTEER;
+        String input = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                        + EVENT_ROLE_DESC_BOB_AS_VOLUNTEER;
         assertParseSuccess(parser, input, new AddCommand(expectedPerson));
     }
 
@@ -159,7 +161,7 @@ public class AddCommandParserTest {
         // invalid event
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                                    + INVALID_EVENT_DESC + ROLE_DESC_ATHLETE + ROLE_DESC_VOLUNTEER,
-                Event.MESSAGE_CONSTRAINTS);
+                EventName.MESSAGE_CONSTRAINTS);
 
         // invalid role
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + EVENT_DESC_BOB

@@ -17,15 +17,17 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.event.Event;
+import seedu.address.model.event.EventContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import seedu.address.testutil.EditEventDescriptorBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.
  */
 public class CommandTestUtil {
-
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
     public static final String VALID_PHONE_AMY = "11111111";
@@ -49,6 +51,7 @@ public class CommandTestUtil {
             + PREFIX_ROLE + VALID_ROLE_SPONSOR;
     public static final String VALID_EVENT_ROLE_BOB_AS_VOLUNTEER = VALID_EVENT_BOB + " "
             + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
+
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
@@ -56,6 +59,9 @@ public class CommandTestUtil {
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "hubby*"; // '*' not allowed in roles
     public static final String INVALID_EVENT_ROLE_DESC = " " + PREFIX_EVENT + VALID_EMAIL_AMY
             + " " + PREFIX_ROLE + "hubby*"; // '*' not allowed in roles
+
+    public static final String VALID_EVENT_NAME_SEA = "SEA";
+    public static final String VALID_EVENT_NAME_ASIAD = "ASIAD";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -66,8 +72,10 @@ public class CommandTestUtil {
     public static final String EVENT_DESC_AMY = " " + PREFIX_EVENT + VALID_EVENT_AMY;
     public static final String EVENT_DESC_BOB = " " + PREFIX_EVENT + VALID_EVENT_BOB;
     public static final String ROLE_DESC_ATHLETE = " " + PREFIX_ROLE + VALID_ROLE_ATHLETE;
-    public static final String ROLE_DESC_SPONSOR = " " + PREFIX_ROLE + VALID_ROLE_SPONSOR;
     public static final String ROLE_DESC_VOLUNTEER = " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
+
+    public static final String EVENT_NAME_DESC_SEA = " " + PREFIX_NAME + VALID_EVENT_NAME_SEA;
+    public static final String EVENT_NAME_DESC_ASIAD = " " + PREFIX_NAME + VALID_EVENT_NAME_ASIAD;
     public static final String EVENT_ROLE_DESC_AMY_AS_VOLUNTEER = " " + PREFIX_EVENT + VALID_EVENT_AMY
             + " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER;
     public static final String EVENT_ROLE_DESC_BOB_AS_VOLUNTEER = " " + PREFIX_EVENT + VALID_EVENT_BOB
@@ -83,6 +91,9 @@ public class CommandTestUtil {
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
 
+    public static final EditEventCommand.EditEventDescriptor DESC_SEA;
+    public static final EditEventCommand.EditEventDescriptor DESC_ASIAD;
+
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
@@ -93,6 +104,9 @@ public class CommandTestUtil {
                 .withEventRoles(VALID_EVENT_BOB + " " + PREFIX_ROLE + VALID_ROLE_ATHLETE,
                         VALID_EVENT_BOB + " " + PREFIX_ROLE + VALID_ROLE_VOLUNTEER)
                 .build();
+
+        DESC_SEA = new EditEventDescriptorBuilder().withName(VALID_EVENT_NAME_SEA).build();
+        DESC_ASIAD = new EditEventDescriptorBuilder().withName(VALID_EVENT_NAME_ASIAD).build();
     }
 
     /**
@@ -145,10 +159,23 @@ public class CommandTestUtil {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredPersonList().size());
 
         Person person = model.getFilteredPersonList().get(targetIndex.getZeroBased());
-        final String[] splitName = person.getName().fullName.split("\\s+");
+        final String[] splitName = person.getName().toString().split("\\s+");
         model.updateFilteredPersonList(new PersonContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredPersonList().size());
     }
 
+    /**
+     * Updates {@code model}'s filtered list to show only the event at the given {@code targetIndex} in the
+     * {@code model}'s address book.
+     */
+    public static void showEventAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredEventList().size());
+
+        Event event = model.getFilteredEventList().get(targetIndex.getZeroBased());
+        final String[] splitName = event.getName().toString().split("\\s+");
+        model.updateFilteredEventList(new EventContainsKeywordsPredicate(Arrays.asList(splitName[0])));
+
+        assertEquals(1, model.getFilteredEventList().size());
+    }
 }

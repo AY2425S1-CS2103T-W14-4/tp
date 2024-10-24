@@ -10,6 +10,7 @@ import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.event.Event;
+import seedu.address.model.event.EventName;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -22,16 +23,16 @@ import seedu.address.model.person.role.Role;
 public class SampleDataUtil {
     public static Person[] getSamplePersons() {
         Map<Event, Set<Role>> eventRoles1 = new HashMap<>();
-        eventRoles1.put(new Event("IFG"), getRoleSet("Athlete - COM - Volleyball Women, Tennis"));
+        eventRoles1.put(new Event(new EventName("IFG")), getRoleSet("Athlete - COM - Volleyball Women, Tennis"));
         Map<Event, Set<Role>> eventRoles2 = new HashMap<>();
-        eventRoles2.put(new Event("IFG"), getRoleSet("Volunteer - Photographer",
+        eventRoles2.put(new Event(new EventName("IFG")), getRoleSet("Volunteer - Photographer",
                 "Committee - Publicity - Project Director"));
         Map<Event, Set<Role>> eventRoles3 = new HashMap<>();
-        eventRoles3.put(new Event("SUNIG"), getRoleSet("Sponsor - OATSIDE"));
+        eventRoles3.put(new Event(new EventName("SUNIG")), getRoleSet("Sponsor - OATSIDE"));
         Map<Event, Set<Role>> eventRoles4 = new HashMap<>();
-        eventRoles4.put(new Event("AUG"), getRoleSet("Athlete - FASS - Swimming Men"));
+        eventRoles4.put(new Event(new EventName("AUG")), getRoleSet("Athlete - FASS - Swimming Men"));
         Map<Event, Set<Role>> eventRoles5 = new HashMap<>();
-        eventRoles5.put(new Event("IVP"), getRoleSet("Audience"));
+        eventRoles5.put(new Event(new EventName("IVP")), getRoleSet("Audience"));
 
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),

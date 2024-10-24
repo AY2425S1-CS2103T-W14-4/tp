@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.event.Event;
+import seedu.address.model.event.EventName;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -26,7 +27,8 @@ public class SampleDataUtilTest {
     @Test
     void getSamplePersons_containsExpectedPerson() {
         Map<Event, Set<Role>> eventRoles = new HashMap<>();
-        eventRoles.put(new Event("IFG"), SampleDataUtil.getRoleSet("Athlete - COM - Volleyball Women, Tennis"));
+        eventRoles.put(new Event(new EventName("IFG")),
+                SampleDataUtil.getRoleSet("Athlete - COM - Volleyball Women, Tennis"));
         Person[] samplePersons = SampleDataUtil.getSamplePersons();
         Person expectedPerson = new Person(new Name("Alex Yeoh"), new Phone("87438807"),
                 new Email("alexyeoh@example.com"), eventRoles);

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.event.Event;
+import seedu.address.model.event.EventName;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -22,7 +23,6 @@ import seedu.address.model.person.role.Role;
  * Jackson-friendly version of {@link Person}.
  */
 class JsonAdaptedPerson {
-
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
     private final String name;
@@ -34,9 +34,11 @@ class JsonAdaptedPerson {
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email,
-            @JsonProperty("eventRoles") Map<JsonAdaptedEvent, Set<JsonAdaptedRole>> eventRoles) {
+    public JsonAdaptedPerson(@JsonProperty("name") String name,
+                            @JsonProperty("phone") String phone,
+                            @JsonProperty("email") String email,
+                            @JsonProperty("eventRoles") Map<JsonAdaptedEvent,
+                            Set<JsonAdaptedRole>> eventRoles) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -51,7 +53,7 @@ class JsonAdaptedPerson {
      * Converts a given {@code Person} into this class for Jackson use.
      */
     public JsonAdaptedPerson(Person source) {
-        name = source.getName().fullName;
+        name = source.getName().toString();
         phone = source.getPhone().value;
         email = source.getEmail().value;
         eventRoles = source.getEventRoles().entrySet().stream()
@@ -105,12 +107,11 @@ class JsonAdaptedPerson {
         final Map<Event, Set<Role>> modelEventRoles = new HashMap<>();
         for (JsonAdaptedEvent event : eventRoles.keySet()) {
             Set<JsonAdaptedRole> roles = eventRoles.get(event);
-            modelEventRoles.put(new Event(event.getEventName()), roles.stream()
+            modelEventRoles.put(new Event(new EventName(event.getEventName())), roles.stream()
                     .map(JsonAdaptedRole::toModelType)
                     .collect(Collectors.toSet()));
         }
 
         return new Person(modelName, modelPhone, modelEmail, modelEventRoles);
     }
-
 }
